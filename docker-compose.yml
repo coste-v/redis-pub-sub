@@ -1,0 +1,25 @@
+version: '3'
+services:
+  worker:
+    build:
+        context: ./worker
+    entrypoint: ["python", "-m", "task.main"]
+    environment:
+      - REDIS_HOST=redis-host
+      - REDIS_PORT=4667
+      - REDIS_CHANNEL=the_channel
+    networks:
+      - pubsub-network
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis-host
+    image: redis:alpine3.10
+    command: ["redis-server", "--port", "4667"]
+    hostname: redis-host
+    networks:
+      - pubsub-network
+
+networks:
+    pubsub-network:
