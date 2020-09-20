@@ -5,7 +5,7 @@ services:
         context: ./worker
     entrypoint: ["python", "-m", "task.main"]
     environment:
-      - REDIS_HOST=redis-host
+      - REDIS_HOST=redis # put the docker-compose service name
       - REDIS_PORT=4667
       - REDIS_CHANNEL=the_channel
     networks:
@@ -14,10 +14,8 @@ services:
       - redis
 
   redis:
-    container_name: redis-host
     image: redis:alpine3.10
     command: ["redis-server", "--port", "4667"]
-    hostname: redis-host
     networks:
       - pubsub-network
 
